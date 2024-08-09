@@ -1,0 +1,150 @@
+/* Scroll container */
+.scrollContainer {
+  box-sizing: border-box;
+  overflow-y: auto;
+  height: 100%;
+  padding-top: var(--ui-kit-space-2);
+  padding-right: var(--ui-kit-space-2);
+  padding-bottom: var(--ui-kit-space-2);
+
+  /* for firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--ui-kit-color-typography-quaternary) transparent;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  position: absolute;
+  width: var(--ui-kit-base-unit);
+  height: 0;
+}
+
+.scrollContainer::-webkit-scrollbar-track {
+  background: transparent;
+  width: var(--ui-kit-base-unit);
+  margin-top: var(--ui-kit-space-1);
+  margin-bottom: var(--ui-kit-space-1);
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+  border-radius: var(--ui-kit-border-radius);
+  background: var(--ui-kit-color-typography-quaternary);
+  visibility: hidden;
+}
+
+.scrollContainer:hover::-webkit-scrollbar-thumb,
+.scrollContainer:focus::-webkit-scrollbar-thumb,
+.scrollContainer:focus-within::-webkit-scrollbar-thumb {
+  visibility: visible;
+}
+
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  padding-left: 0;
+  /* padding: 16px; */
+}
+.footerLink {
+  width: 85%;
+}
+
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  /* padding: 16px; */
+}
+
+/* .initial-screen, .upload-screen {
+  justify-content: center;
+  align-items: center;
+} */
+
+.videoPreview {
+  height: 340px;
+}
+.buttonSection {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  /* box-sizing: border-box; */
+}
+.buttonSection .Rows button {
+  width: 80%; /* Button width relative to the container */
+  max-width: 300px; /* Optional max width for buttons */
+}
+
+.buttonSection .flexGap {
+  flex-grow: 1; /* Make the gap flexible */
+}
+.preset-buttons,
+.font-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.transcription-screen {
+  align-items: stretch;
+}
+
+.video-preview {
+  width: 100%;
+  max-width: 600px;
+  align-self: center;
+}
+
+.appFooter {
+  flex-shrink: 0;
+  text-align: center;
+  position: relative;
+  width: 100%;
+}
+
+/* /* Your custom styles */
+.transcriptContainer {
+  margin-top: 10px;
+}
+
+.transcriptDropdownButton {
+  background-color: #f1f1f1;
+  color: black;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.transcriptDropdownContent {
+  display: none;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.transcriptDropdownContent.visible {
+  display: block;
+}
+/* .dynamicGridBox {
+  border: none;
+  background: var(--ui-kit-color-neutral-low);
+  border-radius: var(--ui-kit-border-radius-large);
+  padding: var(--ui-kit-space-0_5);
+  cursor: pointer;
+} */
+.dynamicGridBoxClicked {
+  border: 2px solid #8b3eff !important;
+}
+.settingsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.checkboxGroup {
+  margin-top: 10px;
+}
