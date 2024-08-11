@@ -1,7 +1,9 @@
 import { auth } from "@canva/user";
+import { AuthState } from "./RenderSIgnInFlow";
 
 export const checkAuthenticationStatus = async (
-  email: string
+  email: string,
+  setAuthState: React.Dispatch<React.SetStateAction<AuthState>>
 ): Promise<"checking" | "authenticated" | "not_authenticated" | "error"> => {
   try {
     const token = await auth.getCanvaUserToken();
@@ -17,6 +19,7 @@ export const checkAuthenticationStatus = async (
     const body = await res.json();
 
     if (body?.isAuthenticated) {
+      setAuthState("authenticated");
       return "authenticated";
     } else {
       return "not_authenticated";
@@ -41,7 +44,7 @@ export const startAuthenticationFlow = async (
     const response = await auth.requestAuthentication();
     switch (response.status) {
       case "COMPLETED":
-        checkAuthenticationStatus(email);
+        checkAuthenticationStatus(email, setState);
         break;
       case "ABORTED":
         console.warn("Authentication aborted by user.");

@@ -192,11 +192,11 @@ export const App = () => {
   useEffect(() => {
     (async function handleAuthStatus() {
       setIsLoading(true);
-      let status = await checkAuthenticationStatus("");
+      let status = await checkAuthenticationStatus("", setAuthState);
       setAuthState(status);
       setIsLoading(false);
     })();
-  }, [screen]);
+  }, []);
 
   useEffect(() => {
     try {
@@ -207,7 +207,7 @@ export const App = () => {
           );
           if (currentScreenIndex < 1) {
             setScreen("upload");
-            // setMessage("You are logged in!");
+            setMessage("You are logged in!");
           }
           break;
         case "not_authenticated":
@@ -223,7 +223,6 @@ export const App = () => {
         // setError("An error occured while logging in ");
       }
     } catch (error) {
-      console.error("Error checking authentication status:", error);
       setError("An unexpected error occurred");
       setAuthState("error");
     }
