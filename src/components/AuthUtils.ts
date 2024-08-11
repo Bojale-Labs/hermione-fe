@@ -65,7 +65,7 @@ export const requestOTP = async (email: string): Promise<Response> => {
       "Content-Type": "application/json",
       deduplication_key: crypto.randomUUID(),
     },
-    body: JSON.stringify({ email }),
+    body: JSON.stringify({ email, source: "BOJALELABS" }),
   });
 };
 

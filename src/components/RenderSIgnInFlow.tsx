@@ -6,6 +6,7 @@ import {
   Rows,
   Columns,
   Column,
+  Text,
 } from "@canva/app-ui-kit";
 import {
   requestOTP,
@@ -81,6 +82,9 @@ const renderAuthStep = (
         placeholder="Enter the six digit code sent to your email"
         disabled={isLoading}
       />
+      <Text size="small" tone="tertiary">
+        Check your spam if you don't see it in your email
+      </Text>
       <Box paddingTop="1u">
         <Columns spacing="1u">
           <Column width="content">
