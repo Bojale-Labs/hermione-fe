@@ -107,12 +107,8 @@ export const App = () => {
   const [showFontRules, setShowFontRules] = useState(false);
   const [authState, setAuthState] = useState<AuthState>("not_authenticated");
   const [step, setStep] = useState("");
-  const [fontOptions, setFontOptions] = useState([]);
-  // const [email, setEmail] = useState("");
-  // const [otp, setOtp] = useState("");
-  // const [step, setStep] = useState<"email" | "otp">("email");
-
   const [previewVideo, setPreviewVideo] = useState<Video | null>();
+
   const names = [
     { id: "mr_beast", name: "Mr Beast" },
     { id: "love_bubbles", name: "Lilly" },
@@ -192,9 +188,7 @@ export const App = () => {
   }, []);
   const isConnectionStrong = networkStrength !== null && networkStrength > 1; // Adjust this threshold as needed
 
- 
   // **  authentication flow **/
-
   useEffect(() => {
     (async function handleAuthStatus() {
       setIsLoading(true);
@@ -213,20 +207,20 @@ export const App = () => {
           );
           if (currentScreenIndex < 1) {
             setScreen("upload");
-            setMessage("You are logged in!");
+            // setMessage("You are logged in!");
           }
           break;
         case "not_authenticated":
           if (screen !== "initial") {
             setScreen("initial");
-            setError("Please login to continue");
+            // setError("Please login to continue");
           }
           break;
         case "error":
-          setError("An error occurred while logging in");
+          // setError("An error occurred while logging in");
           break;
         default:
-          setError("An error occured while logging in ");
+        // setError("An error occured while logging in ");
       }
     } catch (error) {
       console.error("Error checking authentication status:", error);
@@ -302,10 +296,6 @@ export const App = () => {
       },
     }));
     setIsPreviewVideoLoading(false);
-  };
-
-  const toggleTranscriptVisibility = () => {
-    setIsTranscriptVisible(!isTranscriptVisible);
   };
 
   const replaceScreenWithSubtitledMedia = async () => {

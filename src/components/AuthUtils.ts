@@ -12,7 +12,6 @@ export const checkAuthenticationStatus = async (
           Authorization: `Bearer ${token}`,
         },
         method: "POST",
-        // body: JSON.stringify({ email }),
       }
     );
     const body = await res.json();
@@ -39,11 +38,10 @@ export const startAuthenticationFlow = async (
   >
 ) => {
   try {
-    const response = await auth.requestAuthentication({ context: "app" });
+    const response = await auth.requestAuthentication();
     switch (response.status) {
       case "COMPLETED":
         checkAuthenticationStatus(email);
-        setState("authenticated");
         break;
       case "ABORTED":
         console.warn("Authentication aborted by user.");
