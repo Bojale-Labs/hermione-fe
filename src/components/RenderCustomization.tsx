@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   CheckboxGroup,
@@ -15,8 +15,9 @@ import {
   TypographyCard,
 } from "@canva/app-ui-kit";
 import styles from "../../styles/components.css";
-import FontSelector from "src/components/FontSelectorBasic";
+// import FontSelector from "src/components/FontSelectorBasic";
 import { Font } from "src/interfaces";
+import { useAuth } from "./useContext";
 
 interface Settings {
   chunk_settings: {
@@ -96,6 +97,26 @@ export const CustomizationTab = ({
   };
 
   const [fontOptions, setFontOptions] = useState([]);
+  const { fontName, setFontName } = useAuth();
+
+  useEffect(() => {
+    fetch(`${BACKEND_HOST}/api/canva/font-styles`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const options = data.fonts.map((font) => ({
+          label: font,
+          value: font,
+        }));
+        setFontOptions(options);
+      })
+      .catch((error) => {
+        console.error("Error fetching fonts:", error);
+      });
+  }, []);
 
   const handleAlignmentClick = (key, id: string) => {
     if (selectedId === id) {
@@ -192,11 +213,14 @@ export const CustomizationTab = ({
       {showFontRules ? (
         <>
           <Text variant="bold">Font Family Name</Text>
-          <FontSelector onFontsLoaded={setFontOptions} />
+
           <Select
-            value={settings.font_settings.font_name}
+            value={fontName || settings.font_settings.font_name}
             options={fontOptions}
-            onChange={(e) => updateSettings("font_settings", "font_name", e)}
+            onChange={(e) => setFontName(e)}
+            onBlur={() => {
+              updateSettings("font_settings", "font_name", fontName);
+            }}
             stretch
           />
           <Columns alignY="center" spacing="1u">

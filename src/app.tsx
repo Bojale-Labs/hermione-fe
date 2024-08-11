@@ -107,7 +107,7 @@ export const App = () => {
   const [showFontRules, setShowFontRules] = useState(false);
   const [authState, setAuthState] = useState<AuthState>("not_authenticated");
   const [step, setStep] = useState("");
-  // const [login, setLogin] = useState({ email: "", otp: "" });
+  const [fontOptions, setFontOptions] = useState([]);
   // const [email, setEmail] = useState("");
   // const [otp, setOtp] = useState("");
   // const [step, setStep] = useState<"email" | "otp">("email");
@@ -192,6 +192,7 @@ export const App = () => {
   }, []);
   const isConnectionStrong = networkStrength !== null && networkStrength > 1; // Adjust this threshold as needed
 
+ 
   // **  authentication flow **/
 
   useEffect(() => {
@@ -251,6 +252,7 @@ export const App = () => {
   const saveChanges = async () => {
     setIsLoading(true);
     setIsPreviewVideoLoading(true);
+    setHasUnsavedChanges(false);
 
     if (previewVideo?.url && settings) {
       let response = await getPreviewSubtitles({
@@ -615,7 +617,6 @@ export const App = () => {
               variant="primary"
               icon={CopyIcon}
               onClick={() => {
-                setHasUnsavedChanges(false);
                 saveChanges();
               }}
             >
@@ -671,7 +672,6 @@ export const App = () => {
                   variant="primary"
                   alignment="center"
                   onClick={() => {
-                    setHasUnsavedChanges(false);
                     saveChanges();
                   }}
                   loading={isLoading}

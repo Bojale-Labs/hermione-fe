@@ -6,6 +6,8 @@ export type AuthContextType = {
   otp: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
   setOtp: React.Dispatch<React.SetStateAction<string>>;
+  fontName: string;
+  setFontName: React.Dispatch<React.SetStateAction<string>>
 };
 
 // Create the context with a default value
@@ -16,9 +18,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [email, setEmail] = useState<string>("");
   const [otp, setOtp] = useState<string>("");
+  const [fontName, setFontName] = useState<string>("");
 
   return (
-    <AuthContext.Provider value={{ email, otp, setEmail, setOtp }}>
+    <AuthContext.Provider
+      value={{
+        email,
+        otp,
+        setEmail,
+        setOtp,
+        fontName,
+        setFontName,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
