@@ -18,7 +18,7 @@ export const getFullSubtitles = async (
       },
       body: JSON.stringify({
         url: tempUrl.url,
-        model_to_use: "transcript__sample_text_model_version_with_punctuation", // TODO: change this to the model for prod
+        model_to_use: "incredibly-fast-whisper", // TODO: change this to the model for prod
         ...settings,
       }),
     });
