@@ -22,7 +22,7 @@ import {
   FileInput,
   CopyIcon,
   ArrowLeftIcon,
-  TextInput,
+  Link,
 } from "@canva/app-ui-kit";
 import VideoCard from "src/components/VideoCard";
 import {
@@ -753,17 +753,17 @@ export const App = () => {
   const renderFooter = () => (
     <footer>
       <Box paddingY="2u">
-        {/* <Link
+        <Box paddingEnd="2u">
+          <Alert tone="info"> You have 900 credits left </Alert>
+        </Box>
+        <Link
           href="canva.com"
           requestOpenExternalUrl={() => {
-            window.open("https://www.canva.com");
+            window.open("https://hermione.bojalelabs.com");
           }}
         >
-      
-          <Alert tone="info"> You have 900 credits left </Alert>
-
           <Text size="small">$12 per month or $99 for lifetime access</Text>
-        </Link> */}
+        </Link>
         <Text size="xsmall">Powered by: BojaleLabs & Seidea</Text>
       </Box>
     </footer>
@@ -831,6 +831,7 @@ export const App = () => {
             })}
         </Rows>
       </Box>
+
       {screen !== "initial" && renderFooter()}
     </div>
   );
