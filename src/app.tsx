@@ -197,7 +197,6 @@ export const App = () => {
   useEffect(() => {
     (async function handleAuthStatus() {
       setIsLoading(true);
-      console.log("handleAuthStatus", authState);
       let status = await checkAuthenticationStatus("");
       setAuthState(status);
       setIsLoading(false);
@@ -211,7 +210,6 @@ export const App = () => {
           const currentScreenIndex = screens.findIndex(
             (s) => s.name === screen
           );
-          console.log("authState", authState, currentScreenIndex);
           if (currentScreenIndex < 1) {
             setScreen("upload");
             setMessage("You are logged in!");
@@ -279,7 +277,6 @@ export const App = () => {
   const updateSettings = async (category, key, value) => {
     setIsPreviewVideoLoading(true);
     setHasUnsavedChanges(true);
-    console.log("this", category, key, value);
     setSettings((prevSettings) => ({
       ...prevSettings,
       [category]: {
@@ -329,7 +326,7 @@ export const App = () => {
         // find a way to bring in cloudfare for fast image and video processing you should not be handling this at all GPT it
         const result = await upload({
           type: "VIDEO",
-          thumbnailImageUrl: THUMBNAIL_URL,
+          thumbnailImageUrl: subbedVideo.thumbnailUrl,
           mimeType: subbedVideo.mimeType,
           url: subbedVideo.url,
           parentRef: draftContent,
@@ -673,7 +670,10 @@ export const App = () => {
                 <Button
                   variant="primary"
                   alignment="center"
-                  onClick={saveChanges}
+                  onClick={() => {
+                    setHasUnsavedChanges(false);
+                    saveChanges();
+                  }}
                   loading={isLoading}
                 >
                   Apply Changes

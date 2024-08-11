@@ -12,7 +12,7 @@ import {
   validateOTP,
   startAuthenticationFlow,
 } from "src/components/AuthUtils";
-import { AuthContextType, useAuth } from "./useContext";
+import { AuthContextType, useAuth } from "src/components/useContext";
 // Replace with your actual auth service
 export type AuthState =
   | "checking"
@@ -107,7 +107,6 @@ const renderAuthStep = (
                     startAuthenticationFlow(email, otp, setAuthState);
                   } else {
                     const body = await verifyOtpResponse.json();
-                    console.log(body);
                     setError(
                       body?.message || "An error occurred while requesting OTP"
                     );

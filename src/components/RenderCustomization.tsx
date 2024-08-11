@@ -92,7 +92,6 @@ export const CustomizationTab = ({
   const [fontSize, setFontSize] = useState(settings.font_settings.font_size);
 
   const handleBlur = (category: string, key: string, value: number) => {
-    console.log(category, key, value);
     updateSettings(category, key, value);
   };
 

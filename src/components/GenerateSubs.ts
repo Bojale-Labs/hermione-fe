@@ -24,7 +24,6 @@ export const getFullSubtitles = async (
     });
     if (!response.ok) {
       setError("Failed to generate subtitles");
-      console.log(`Failed to generate subtitles: ${response.statusText}`);
     }
 
     return await response.json();

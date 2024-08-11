@@ -4,7 +4,6 @@ export const checkAuthenticationStatus = async (
   email: string
 ): Promise<"checking" | "authenticated" | "not_authenticated" | "error"> => {
   try {
-    console.log("Checking authentication status", email);
     const token = await auth.getCanvaUserToken();
     const res = await fetch(
       `${BACKEND_HOST}/api/canva/authentication/status?platform=canva&email=${email}`,
@@ -19,10 +18,8 @@ export const checkAuthenticationStatus = async (
     const body = await res.json();
 
     if (body?.isAuthenticated) {
-      console.log(body);
       return "authenticated";
     } else {
-      console.log("not authenticated");
       return "not_authenticated";
     }
   } catch (error) {
@@ -46,7 +43,6 @@ export const startAuthenticationFlow = async (
     switch (response.status) {
       case "COMPLETED":
         checkAuthenticationStatus(email);
-        console.log("Authentication completed");
         setState("authenticated");
         break;
       case "ABORTED":
