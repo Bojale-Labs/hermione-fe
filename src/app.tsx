@@ -4,6 +4,7 @@ import React, {
   useRef,
   useCallback,
   Suspense,
+  use,
 } from "react";
 import {
   Button,
@@ -21,6 +22,7 @@ import {
   FileInput,
   CopyIcon,
   ArrowLeftIcon,
+  TextInput,
 } from "@canva/app-ui-kit";
 import VideoCard from "src/components/VideoCard";
 import {
@@ -39,6 +41,14 @@ import { getTemporaryUrl, upload } from "@canva/asset";
 import { CustomizationTab } from "src/components/RenderCustomization";
 import styles from "styles/components.css";
 import "styles/components.css";
+import {
+  // authenticateOTP,
+  checkAuthenticationStatus,
+  requestOTP,
+  startAuthenticationFlow,
+} from "src/components/AuthUtils"; // TODO: remove this
+import { auth } from "@canva/user";
+import renderAuthStep, { AuthState } from "./components/RenderSIgnInFlow";
 
 type mimeType =
   | "video/mp4"
@@ -72,9 +82,6 @@ interface NavigatorWithConnection extends Navigator {
   connection?: NetworkInformation;
 }
 
-interface Preview {
-  thumbnailUrl: string;
-}
 export const App = () => {
   const currentSelection = useSelection("video");
   const isElementSelected = currentSelection.count > 0;
@@ -98,6 +105,12 @@ export const App = () => {
   const [successfulUpload, setSuccessfulUpload] = useState(false);
   const [showMultipleLinesRules, setShowMultipleLinesRules] = useState(false);
   const [showFontRules, setShowFontRules] = useState(false);
+  const [authState, setAuthState] = useState<AuthState>("not_authenticated");
+  const [step, setStep] = useState("");
+  // const [login, setLogin] = useState({ email: "", otp: "" });
+  // const [email, setEmail] = useState("");
+  // const [otp, setOtp] = useState("");
+  // const [step, setStep] = useState<"email" | "otp">("email");
 
   const [previewVideo, setPreviewVideo] = useState<Video | null>();
   const names = [
@@ -179,6 +192,50 @@ export const App = () => {
   }, []);
   const isConnectionStrong = networkStrength !== null && networkStrength > 1; // Adjust this threshold as needed
 
+  // **  authentication flow **/
+
+  useEffect(() => {
+    (async function handleAuthStatus() {
+      setIsLoading(true);
+      console.log("handleAuthStatus", authState);
+      let status = await checkAuthenticationStatus("");
+      setAuthState(status);
+      setIsLoading(false);
+    })();
+  }, [screen]);
+
+  useEffect(() => {
+    try {
+      switch (authState) {
+        case "authenticated":
+          const currentScreenIndex = screens.findIndex(
+            (s) => s.name === screen
+          );
+          console.log("authState", authState, currentScreenIndex);
+          if (currentScreenIndex < 1) {
+            setScreen("upload");
+            setMessage("You are logged in!");
+          }
+          break;
+        case "not_authenticated":
+          if (screen !== "initial") {
+            setScreen("initial");
+            setError("Please login to continue");
+          }
+          break;
+        case "error":
+          setError("An error occurred while logging in");
+          break;
+        default:
+          setError("An error occured while logging in ");
+      }
+    } catch (error) {
+      console.error("Error checking authentication status:", error);
+      setError("An unexpected error occurred");
+      setAuthState("error");
+    }
+  }, [authState]);
+
   const handleBackClick = useCallback(() => {
     setError(null);
     setMessage(null);
@@ -219,9 +276,10 @@ export const App = () => {
     setIsPreviewVideoLoading(false);
   };
 
-  const updateSettings = useCallback(async (category, key, value) => {
+  const updateSettings = async (category, key, value) => {
     setIsPreviewVideoLoading(true);
     setHasUnsavedChanges(true);
+    console.log("this", category, key, value);
     setSettings((prevSettings) => ({
       ...prevSettings,
       [category]: {
@@ -230,7 +288,7 @@ export const App = () => {
       },
     }));
     setIsPreviewVideoLoading(false);
-  }, []);
+  };
 
   const updateFormattingSettings = async (values: string[]) => {
     setIsPreviewVideoLoading(true);
@@ -360,14 +418,34 @@ export const App = () => {
           Click start to begin transcribing all your videos
         </Text>
 
-        <Button
-          variant={"primary"}
-          onClick={() => {
-            setScreen("upload");
-          }}
-        >
-          Start here
-        </Button>
+        {!step && authState === "not_authenticated" && (
+          <Button
+            variant={"primary"}
+            stretch={true}
+            disabled={isLoading}
+            loading={isLoading}
+            onClick={() => {
+              setStep("email");
+              setAuthState("checking");
+            }}
+          >
+            Login
+          </Button>
+        )}
+        {step &&
+          renderAuthStep(
+            setError,
+            step,
+            setStep,
+            setAuthState,
+            isLoading,
+            setIsLoading
+            // handleAuthStatus
+            // otp,
+            // setOtp,
+            // email,
+            // setEmail
+          )}
       </Rows>
     </Box>
   );
@@ -445,9 +523,7 @@ export const App = () => {
             durationInSeconds={5}
             videoPreviewUrl={previewVideo.url}
             onClick={() => {}}
-            // ariaLabel="Add image to transcribe"
             thumbnailUrl={previewVideo.thumbnailUrl}
-            // mimeType={previewVideo.mimeType}
           />
         </Box>
       )}
@@ -717,12 +793,13 @@ export const App = () => {
   ];
 
   const screenToRender = screens.find((s) => s.name === screen);
+  const shouldShowBackButton = screen !== "initial" && screen !== "upload";
 
   return (
     <div className={styles.appContainer}>
       <Box paddingEnd="2u">
         {(!isOnline || !isConnectionStrong) && renderNetworkStatus()}
-        {screen !== "initial" && (
+        {shouldShowBackButton && (
           <Box paddingTop="1u">
             <Columns spacing="1u">
               <Column width="content">

@@ -92,6 +92,7 @@ export const CustomizationTab = ({
   const [fontSize, setFontSize] = useState(settings.font_settings.font_size);
 
   const handleBlur = (category: string, key: string, value: number) => {
+    console.log(category, key, value);
     updateSettings(category, key, value);
   };
 
@@ -122,9 +123,6 @@ export const CustomizationTab = ({
             <Column width="1/2">
               <NumberInput
                 min={1}
-                hasSpinButtons={true}
-                decrementAriaLabel="Decrement"
-                incrementAriaLabel="Increment"
                 defaultValue={maxWordsPerLine}
                 value={maxWordsPerLine}
                 onChange={(e: number) => setMaxWordsPerLine(e || 1)}
@@ -148,9 +146,6 @@ export const CustomizationTab = ({
             <Column width="1/2">
               <NumberInput
                 min={1}
-                hasSpinButtons={true}
-                decrementAriaLabel="Decrement"
-                incrementAriaLabel="Increment"
                 defaultValue={maxCharsPerLine}
                 value={maxCharsPerLine}
                 onChange={(e: number) => setMaxCharsPerLine(e || 1)}
@@ -173,9 +168,6 @@ export const CustomizationTab = ({
             <Column width="1/2">
               <NumberInput
                 min={0.1}
-                hasSpinButtons={true}
-                decrementAriaLabel="Decrement"
-                incrementAriaLabel="Increment"
                 step={0.1}
                 defaultValue={proximityThreshold}
                 value={proximityThreshold}
@@ -216,15 +208,15 @@ export const CustomizationTab = ({
             <Column width="1/2">
               <NumberInput
                 min={1}
-                hasSpinButtons={true}
-                decrementAriaLabel="Decrement"
-                incrementAriaLabel="Increment"
                 value={fontSize}
-                defaultValue={fontSize}
-                onChange={(e: number) => setFontSize(e || 1)}
-                onBlur={() =>
-                  handleBlur("font_settings", "font_size", fontSize)
-                }
+                defaultValue={settings.font_settings.font_size}
+                onChange={(e: number) => {
+                  setFontSize(e || 1);
+                }}
+                onBlur={() => {
+                  handleBlur("font_settings", "font_size", fontSize);
+                }}
+                placeholder="Font Size"
               />
             </Column>
           </Columns>
@@ -306,7 +298,7 @@ export const CustomizationTab = ({
                     className={`${
                       item.id === selectedId ? styles.dynamicGridBoxClicked : ""
                     }`}
-                    borderRadius="standard"
+                    // borderRadius="standard"
                   >
                     <TypographyCard
                       ariaLabel={item.name}
