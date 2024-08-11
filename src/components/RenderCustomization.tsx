@@ -327,7 +327,6 @@ export const CustomizationTab = ({
             label: "Capitalize First Letter",
           },
           { value: "bounce_animation", label: "Bounce Animation" },
-          // { value: "alex_hormozi", label: "Alex Hormozi Style" },
         ]}
         value={Object.entries(settings.adjust_formatting)
           .filter(([_, value]) => value)

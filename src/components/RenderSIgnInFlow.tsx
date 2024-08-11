@@ -28,8 +28,7 @@ const renderAuthStep = (
   setStep,
   setAuthState: React.Dispatch<React.SetStateAction<AuthState>>,
   isLoading: boolean,
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  // handleAuthStatus
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const { email, setEmail, otp, setOtp } = useAuth();
 
@@ -105,12 +104,7 @@ const renderAuthStep = (
                 try {
                   const verifyOtpResponse = await validateOTP(email, otp);
                   if (verifyOtpResponse.ok) {
-                    startAuthenticationFlow(
-                      email,
-                      otp,
-                      setAuthState,
-                      // handleAuthStatus
-                    );
+                    startAuthenticationFlow(email, otp, setAuthState);
                   } else {
                     const body = await verifyOtpResponse.json();
                     console.log(body);
@@ -126,7 +120,6 @@ const renderAuthStep = (
                 }
               }}
               loading={isLoading}
-              // disabled={isLoading}
             >
               Authenticate
             </Button>

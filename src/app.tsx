@@ -440,11 +440,6 @@ export const App = () => {
             setAuthState,
             isLoading,
             setIsLoading
-            // handleAuthStatus
-            // otp,
-            // setOtp,
-            // email,
-            // setEmail
           )}
       </Rows>
     </Box>
